@@ -1,0 +1,17 @@
+<h2>
+	Check-out my Rocket ~Elon Musk
+</h2>
+
+<%	rockets.forEach(function(rocket){	%>
+<ul>
+	<li>
+		<ul>
+			<li>	Flight Number : <%=rocket.flight_number%>	</li>
+			<%var date=rocket.launch_date_utc%>
+			<li>	Launch Date :  <%=Date(date)%></li>
+			<li>	Rocket Name : <%=rocket.rocket.rocket_name%>  </li>
+			<li>	Mission Patch Link : <%=rocket.links.mission_patch%>	</li>
+		</ul>
+	</li>
+</ul>
+<%});%>

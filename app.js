@@ -1,13 +1,17 @@
 var 	express = require("express"),
-		request = require("request"),
+		Request = require("request"),
+		mongoose = require("mongoose"),
 		app = express();
 
+mongoose.connect("mongodb://localhost/task");
+app.set("view engine","ejs");
+
 app.get("/",function(request,response){
-	response.send("Home Directry");
+	response.render("Index");
 });
 
 app.get("/task",function(request,response){
-	request("https://api.spacexdata.com/v3/rockets",function(error,response,rockets){
+	Request("https://api.spacexdata.com/v3/launches",function(error,responses,rockets){
 	if(error)
 		{
 			console.log("Something went wrong");
@@ -15,10 +19,12 @@ app.get("/task",function(request,response){
 			response.render("/");
 		}
 
-	else if(response.statusCode==200)
+	else if(responses.statusCode==200)
 		{
-			var data = JSON.parse(rockets)
-			console.log(data);
+			var data = JSON.parse(rockets);
+			response.render("Task",{rockets:data});
+		//response.send(data);
+		//console.log(data[0].rocket_name);
 		}
 	});
 });
