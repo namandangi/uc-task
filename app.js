@@ -6,6 +6,15 @@ var 	express = require("express"),
 mongoose.connect("mongodb://localhost/task");
 app.set("view engine","ejs");
 
+var taskSchema = new mongoose.Schema({
+	flight_number : Number,
+	launch_date : String,
+	rocket_name : String,
+	patch_link : String
+});
+
+var Task = new mongoose.model("Task",taskSchema);
+
 app.get("/",function(request,response){
 	response.render("Index");
 });
@@ -22,12 +31,39 @@ app.get("/task",function(request,response){
 	else if(responses.statusCode==200)
 		{
 			var data = JSON.parse(rockets);
+			data.forEach(function(rocket){
+			//console.log(rocket.id);
+					Task.create({
+					flight_number : rocket.flight_number,
+					launch_date : rocket.launch_date_utc,
+					rocket_name : rocket.rocket.rocket_name,
+					patch_link : rocket.links.mission_patch
+				},function(err,rockett){
+						if(err)
+							{
+								console.log("Something went wrong redirecting...");
+								response.redirect("/");
+							}
+						else
+							{
+								console.log("Saved a Rocket");
+								console.log(rockett);
+							}
+					});
+			});
+			
 			response.render("Task",{rockets:data});
 		//response.send(data);
-		//console.log(data[0].rocket_name);
 		}
 	});
 });
+
+Task.create({
+	
+});
+
+
+
 
 app.listen(process.env.PORT||8000,process.env.IP,function(){
 console.log("The server is up and running");
