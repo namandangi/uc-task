@@ -58,12 +58,10 @@ app.get("/task",function(request,response){
 	});
 });
 
-Task.create({
-	
+app.get("*",function(req,res){
+	//res.send("Page not Found! ....redirecting");
+	res.redirect("/");
 });
-
-
-
 
 app.listen(process.env.PORT||8000,process.env.IP,function(){
 console.log("The server is up and running");
