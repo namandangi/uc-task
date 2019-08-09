@@ -1,16 +1,27 @@
 <h2>
-	Check-out my Rocket ~Elon Musk
+	Check-out my Rocket ~Elon Musk XD
 </h2>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<div class=" m-3">
+	<a class="btn btn btn-primary" href="/">Back to Homepage</a>	
+</div>
+
 
 <%	rockets.forEach(function(rocket){	%>
 <ul>
 	<li>
 		<ul>
-			<li>	Flight Number : <%=rocket.flight_number%>	</li>
-			<%var date=rocket.launch_date_utc%>
-			<li>	Launch Date :  <%=Date(date)%></li>
-			<li>	Rocket Name : <%=rocket.rocket.rocket_name%>  </li>
-			<li>	Mission Patch Link : <%=rocket.links.mission_patch%>	</li>
+			<div class="container">
+				<li>	Flight Number : <%=rocket.flight_number%>	</li>	
+				<li>	Launch Date :  <%=rocket.launch_date_utc%>  </li>
+				<li>	Rocket Name : <%=rocket.rocket.rocket_name%>  </li>
+				<% if(rocket.links.mission_patch!=""){	%>	
+				<li>	Mission Patch Link : <%=rocket.links.mission_patch%>	</li>	
+			<%} else {%>
+					<li>	Mission Patch Link : TBD	</li>
+				<% } %>
+			</div>
 		</ul>
 	</li>
 </ul>
