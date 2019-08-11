@@ -1,19 +1,11 @@
 var 	express = require("express"),
 		Request = require("request"),
 		mongoose = require("mongoose"),
-		app = express();
+		app = express(),
+		task = require("./models/tasks");
 
 mongoose.connect("mongodb://localhost/task");
 app.set("view engine","ejs");
-
-var taskSchema = new mongoose.Schema({
-	flight_number : Number,
-	launch_date : String,
-	rocket_name : String,
-	patch_link : String
-});
-
-var Task = new mongoose.model("Task",taskSchema);
 
 app.get("/",function(request,response){
 	response.render("Index");
