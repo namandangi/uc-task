@@ -7,19 +7,24 @@
 	<a class="btn btn btn-primary" href="/">Back to Homepage</a>	
 </div>
 
+<%var month=["January","February","March","April","May","June","July","August","September","October","November","December"];%>
+<%//creating an array of month names to print the month name by reference from index ids%>
+
 
 <%	rockets.forEach(function(rocket){	%>
 <ul>
 	<li>
 		<ul>
-			<div class="container">
+			<div style ="text-align:center"class="container">
 				<li>	Flight Number : <%=rocket.flight_number%>	</li>	
-				<li>	Launch Date :  <%=rocket.launch_date_utc%>  </li>
+					<%var date = new Date(rocket.launch_date_utc);%> <%//creating an object of Date class to extract month,day and date "%>
+				<li>	Launch Date :  <%= date.getUTCDate()+" "+month[date.getUTCMonth()]  +" "+date.getUTCFullYear() %>  </li>
 				<li>	Rocket Name : <%=rocket.rocket.rocket_name%>  </li>
-				<% if(rocket.links.mission_patch!=""){	%>	
-				<li>	Mission Patch Link : <%=rocket.links.mission_patch%>	</li>	
+				<% if(rocket.links.mission_patch!=null){	%>	
+				<li>	Mission Patch Link : 
+					<img src="<%=rocket.links.mission_patch%>">	</li>	
 			<%} else {%>
-					<li>	Mission Patch Link : TBD	</li>
+					<li>	Mission Patch Link : TBD	</li>	<%//for rockets that haven't been launched yet%>
 				<% } %>
 			</div>
 		</ul>
