@@ -1,10 +1,10 @@
 var 	express = require("express"),
 		Request = require("request"),
 		mongoose = require("mongoose"),
-		app = express(),
-		task = require("./models/tasks");
+		task = require("./models/tasks"),
+		app = express();
 
-mongoose.connect("mongodb://localhost/task");
+mongoose.connect("mongodb://localhost:27017/task",{useNewUrlParser:true});
 app.set("view engine","ejs");
 
 app.get("/",function(request,response){
@@ -15,7 +15,7 @@ app.get("/task",function(request,response){
 	Request("https://api.spacexdata.com/v3/launches",function(error,responses,rockets){
 	if(error)
 		{
-			console.log("Something went wrong");
+			console.log("Something went wrong");	/* when an error is encountered we redirect to index route */
 			console.log(error);
 			response.render("/");
 		}
@@ -23,14 +23,13 @@ app.get("/task",function(request,response){
 	else if(responses.statusCode==200)
 		{
 			var data = JSON.parse(rockets);
-			data.forEach(function(rocket){
-			//console.log(rocket.id);
-					Task.create({
-					flight_number : rocket.flight_number,
-					launch_date : rocket.launch_date_utc,
-					rocket_name : rocket.rocket.rocket_name,
-					patch_link : rocket.links.mission_patch
-				},function(err,rockett){
+			data.forEach(function(rocketlaunch){ 	//for every rocket launch we create a new data object containing which is saved to the database
+					task.create({
+					flight_number : rocketlaunch.flight_number,
+					launch_date : rocketlaunch.launch_date_utc,
+					rocket_name : rocketlaunch.rocket.rocket_name,
+					patch_link : rocketlaunch.links.mission_patch
+				},function(err,rockett){	//callback function to handle errors and print the saved rockets to console
 						if(err)
 							{
 								console.log("Something went wrong redirecting...");
@@ -44,14 +43,12 @@ app.get("/task",function(request,response){
 					});
 			});
 			
-			response.render("Task",{rockets:data});
-		//response.send(data);
+			response.render("Task",{rockets:data});	//rendering Task.ejs while passing the parsed data as an object
 		}
 	});
 });
 
-app.get("*",function(req,res){
-	//res.send("Page not Found! ....redirecting");
+app.get("*",function(req,res){ //redirecting all other routes to the index routes
 	res.redirect("/");
 });
 
