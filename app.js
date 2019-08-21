@@ -2,10 +2,17 @@ var 	express = require("express"),
 		Request = require("request"),
 		mongoose = require("mongoose"),
 		task = require("./models/tasks"),
+		readline = require("readline"),
 		app = express();
 
 mongoose.connect("mongodb://localhost:27017/task",{useNewUrlParser:true});
 app.set("view engine","ejs");
+
+var rl = readline.createInterface({
+	input : process.stdin,
+	output : process.stdout
+});
+
 
 app.get("/",function(request,response){
 	response.render("Index");
