@@ -29,8 +29,8 @@ app.get("/task",function(request,response){
 
 	else if(responses.statusCode==200)
 		{
-			var data = JSON.parse(rockets);
-			data.forEach(function(rocketlaunch){ 	//for every rocket launch we create a new data object containing which is saved to the database
+			var data = JSON.parse(rockets);		//parsing string data to object
+			data.forEach(function(rocketlaunch){ 	//rocketlaunch vaiable is used to reference each rocket-launch and store it in database
 					task.create({
 					flight_number : rocketlaunch.flight_number,
 					launch_date : rocketlaunch.launch_date_utc,
